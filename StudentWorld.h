@@ -10,5 +10,8 @@ class StudentWorld {
 
 };
 
+class Actor{};
+
+
 
 #endif //ICEMAN_STUDENTWORLD_H
