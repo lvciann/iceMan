@@ -5,8 +5,9 @@
 #ifndef ICEMAN_STUDENTWORLD_H
 #define ICEMAN_STUDENTWORLD_H
 
+class GameWorld{};
 
-class StudentWorld {
+class StudentWorld : public GameWorld{
 
 };
 
