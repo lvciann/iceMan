@@ -4,4 +4,4 @@ project(iceMan)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(iceMan
-        main.cpp StudentWorld.cpp StudentWorld.h)
+        main.cpp StudentWorld.cpp StudentWorld.h GameWorld.cpp GameWorld.h GameConstants.h)
