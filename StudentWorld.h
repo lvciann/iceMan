@@ -15,9 +15,9 @@ private:
     //oil field as well as the Iceman object
 public:
     //constructor that initializes all member variables required for gameplay
-    StudentWorld(){
-
-    }
+//    StudentWorld(){
+//
+//    }
 
     //destructor for Iceman and all remaining Ice
     ~StudentWorld() {}
@@ -33,7 +33,7 @@ public:
 
     //frees any dynamically allocated data that was allocated during calls to init() or move()
     //likely does the same thing as dtor
-    void cleanup(){}
+    virtual void cleanup(){}
 
 };
 
