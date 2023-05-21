@@ -5,13 +5,13 @@
 #ifndef ICEMAN_STUDENTWORLD_H
 #define ICEMAN_STUDENTWORLD_H
 
-class GameWorld{};
 
 class StudentWorld : public GameWorld{
-
+private:
+public:
+    StudentWorld(){};
+    virtual ~StudentWorld();
 };
-
-class Actor{};
 
 
 

@@ -43,7 +43,12 @@ private:
 };
 
 class Ice : public Actor {
+private:
+public:
+    Ice(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) : //takes these in
+        Actor(IID_ICE, 0, 0, right, 100.0, 0){ //when Ice is created, it will initialize Actor with these values
 
+    }
 
 };
 
