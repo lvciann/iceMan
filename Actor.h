@@ -46,8 +46,14 @@ class Ice : public Actor {
 private:
 public:
     Ice(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) : //takes these in
-        Actor(IID_ICE, 0, 0, right, 100.0, 0){ //when Ice is created, it will initialize Actor with these values
+        Actor(IID_ICE, startX, startY, right, .25, 3){ //when Ice is created, it will initialize Actor with these values
+        //each ice must have specified x, y location when new ice is constructed
 
+        setVisible(true);
+    }
+
+    virtual ~Ice() {
+    //must be deleted when IceMan touches it?
     }
 
 };
