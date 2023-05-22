@@ -5,6 +5,7 @@
 #ifndef ICEMAN_STUDENTWORLD_H
 #define ICEMAN_STUDENTWORLD_H
 #include "GameWorld.h"
+#include "GameConstants.h"
 #include "Actor.h"
 
 class StudentWorld : public GameWorld { //since it's keeping track of
@@ -18,10 +19,26 @@ public:
     ice(IID_ICE, 0, 0, GraphObject::right, 0.25, 3){
     }
 
-    virtual ~StudentWorld();
-    virtual int init(){}
-    virtual int move() {}
-    virtual void cleanup() {}
+    virtual ~StudentWorld(){
+
+    }
+
+    virtual int init()
+    {
+        return GWSTATUS_CONTINUE_GAME;
+    }
+
+    virtual int move()
+    {
+        // This code is here merely to allow the game to build, run, and terminate after you hit enter a few times.
+        // Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.
+        decLives();
+        return GWSTATUS_PLAYER_DIED;
+    }
+
+    virtual void cleanUp()
+    {
+    }
 };
 
 

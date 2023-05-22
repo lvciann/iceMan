@@ -15,7 +15,7 @@ public:
 		
 	}
 
-//	virtual void doSomething() = 0;
+	virtual void doSomething() = 0;
 
 
 };
@@ -36,6 +36,10 @@ public:
 
 	}
 
+    virtual void doSomething(){
+        printf("Iceman doing something");
+    }
+
 private:
 
 	int health;
@@ -55,6 +59,10 @@ public:
     virtual ~Ice() {
     //must be deleted when IceMan touches it?
     }
+
+    virtual void doSomething(){
+        printf("ice doing something");
+}
 
 };
 
