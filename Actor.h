@@ -15,7 +15,7 @@ public:
 		
 	}
 
-	virtual void doSomething() = 0;
+//	virtual void doSomething() = 0;
 
 
 };
