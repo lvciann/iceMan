@@ -58,6 +58,7 @@ public:
 
     virtual ~Ice() {
     //must be deleted when IceMan touches it?
+
     }
 
     virtual void doSomething(){
