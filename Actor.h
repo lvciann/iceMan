@@ -2,68 +2,53 @@
 #define ACTOR_H_
 
 #include "GraphObject.h"
+#include "StudentWorld.h"
+
+class StudentWorld;
 
 class Actor : public GraphObject {
 public:
-	Actor(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
-		GraphObject(imageID, startX, startY, right, 1.0, 0){
-	
-		setVisible(true);
-	}
+	Actor(StudentWorld* world, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
 
-	virtual ~Actor(){
-		
-	}
+	~Actor();
+	virtual void doSomething();
+	//virtual bool isActive() = 0;
 
-	virtual void doSomething() = 0;
+	StudentWorld* getWorld();
+
+
+	StudentWorld* theWorld;
 
 
 };
 
 class People : public Actor {
-
-
-};
-
-
-class Iceman : public Actor {
 public:
+	People(StudentWorld* world, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
+	virtual ~People();
 
-	Iceman(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
-		Actor(IID_PLAYER, 30, 60, right, 1.0, 0) {
-
-		health = 10;
-
-	}
-
-    virtual void doSomething(){
-        printf("Iceman doing something");
-    }
-
-private:
+	//virtual void isAnnoyed(){}		//all people can be annoyed: Iceman, Protestors
 
 	int health;
 
 };
 
-class Ice : public Actor {
-private:
+
+class Iceman : public People {
 public:
-    Ice(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) : //takes these in
-        Actor(IID_ICE, startX, startY, right, .25, 3){ //when Ice is created, it will initialize Actor with these values
-        //each ice must have specified x, y location when new ice is constructed
 
-        setVisible(true);
-    }
+	Iceman(StudentWorld* world, int startX, int startY);
 
-    virtual ~Ice() {
-    //must be deleted when IceMan touches it?
+	int getHealth();
 
-    }
+	void doSomething();
 
-    virtual void doSomething(){
-        printf("ice doing something");
-}
+
+};
+
+class Ice : public Actor {
+public:
+	Ice(StudentWorld* world, int startX, int startY);
 
 };
 
@@ -95,7 +80,7 @@ class WaterPool : public Actor {
 
 class Protestor : public People {
 
-
+	//both protestors can pick up gold nuggets
 };
 
 class HardcoreProtestor : public Protestor {
@@ -104,4 +89,5 @@ class HardcoreProtestor : public Protestor {
 };
 
 
-#endif // ACTOR_H_
+#endif //ACTOR_H_
+
