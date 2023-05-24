@@ -6,9 +6,16 @@
 #include <string>
 using namespace std;
 
+StudentWorld* theWorld = nullptr;
+
 GameWorld* createStudentWorld(string assetDir)
 {
-    return new StudentWorld(assetDir);
+    theWorld = new StudentWorld(assetDir);
+    return theWorld;
+}
+
+StudentWorld* getWorld() {
+    return theWorld;
 }
 
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp

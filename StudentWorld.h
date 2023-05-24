@@ -39,6 +39,7 @@ public:
 
 class Actor{};
 
+StudentWorld* getWorld();
 
 
 #endif //ICEMAN_STUDENTWORLD_H
