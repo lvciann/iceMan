@@ -14,9 +14,9 @@ public:
 		setVisible(true);
 	}
 
-	~Actor() {};
-	virtual void doSomething() = 0;
-	virtual bool isActive() = 0;
+	~Actor() {}
+	virtual void doSomething() {}
+	//virtual bool isActive();
 
 
 
@@ -42,7 +42,7 @@ protected:
 class Iceman : public People {
 public:
 
-	Iceman(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
+	Iceman() :
 		People(IID_PLAYER, 30, 60, right, 1.0, 0) {
 
 		health = 10;
