@@ -8,31 +8,26 @@ class StudentWorld;
 
 class Actor : public GraphObject {
 public:
-	Actor(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
-		GraphObject(imageID, startX, startY, dir, size, depth) {
+	Actor(StudentWorld* world, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
 
-		setVisible(true);
-	}
+	~Actor();
+	virtual void doSomething();
+	//virtual bool isActive() = 0;
 
-	~Actor() {}
-	virtual void doSomething() {}
-	//virtual bool isActive();
+	StudentWorld* getWorld();
 
+
+	StudentWorld* theWorld;
 
 
 };
 
 class People : public Actor {
 public:
-	People(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
-		Actor(imageID, startX, startY, dir, size, depth) {
-
-
-	}
-	virtual ~People() {}
+	People(StudentWorld* world, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
+	virtual ~People();
 
 	//virtual void isAnnoyed(){}		//all people can be annoyed: Iceman, Protestors
-protected:
 
 	int health;
 
@@ -42,50 +37,18 @@ protected:
 class Iceman : public People {
 public:
 
-	Iceman() :
-		People(IID_PLAYER, 30, 60, right, 1.0, 0) {
+	Iceman(StudentWorld* world, int startX, int startY);
 
-		health = 10;
+	int getHealth();
 
-	}
-
-	void doSomething() {
-
-		int ch;
-		if (getWorld()->getKey(ch) == true)
-		{
-			// user hit a key this tick! 
-			switch (ch)
-			{
-			case KEY_PRESS_LEFT:
-				moveTo(getX() - 1, getY());
-				//... move player to the left ...;
-				break;
-			case KEY_PRESS_RIGHT:
-				moveTo(getX() + 1, getY());
-				//... move player to the right ...;
-				break;
-			case KEY_PRESS_UP:
-				moveTo(getX(), getY() + 1);
-				break;
-			case KEY_PRESS_DOWN:
-				moveTo(getX(), getY() - 1);
-				break;
-
-			case KEY_PRESS_SPACE:
-				//... add a Squirt in front of the player...;
-				break;
-				// etc…
-			}
-		}
-		//...
-	}
+	void doSomething();
 
 
 };
 
 class Ice : public Actor {
-
+public:
+	Ice(StudentWorld* world, int startX, int startY);
 
 };
 
@@ -126,5 +89,4 @@ class HardcoreProtestor : public Protestor {
 };
 
 
-#endif // ACTOR_H_
-
+#endif //ACTOR_H_
