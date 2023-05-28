@@ -4,42 +4,39 @@
 
 #ifndef ICEMAN_STUDENTWORLD_H
 #define ICEMAN_STUDENTWORLD_H
-
 #include "GameWorld.h"
+#include "GameConstants.h"
+#include "Actor.h"
 
+//we want create a constant to be able to use 60 and 64 continuously
+//we want to create a constant to be able to use 60 and 64 continuously
+const int ICE_WIDTH = 64;
+const int ICE_HEIGHT = 60;
 
-//keeps track of the whole game world
-class StudentWorld : public GameWorld{
+class Actor;
+class Iceman;
+class Ice;
+
+class StudentWorld : public GameWorld { //since it's keeping track of
 private:
-    //private data member variables required to keep track of all the ice in the
-    //oil field as well as the Iceman object
+    //private data member variables required to keep track of all Ice + Iceman objecy
+    Ice* ice[ICE_HEIGHT][ICE_WIDTH]; // 2d-array of Ice pointers
+    Iceman* iceman;
 public:
-    //constructor that initializes all member variables required for gameplay
-//    StudentWorld(){
-//
-//    }
+    StudentWorld(std::string assetDir);
 
-    //destructor for Iceman and all remaining Ice
-    ~StudentWorld() {}
+    virtual ~StudentWorld();
 
-    //must create Iceman object and insert it to oil field at right location,
-    //must create all the oil field's Ice objects and inserts them into data structure that tracks active Ice
-    virtual int init(){}
+    //initialize the data structures used to keep track of game's virtual world
+    //construct new oil field
+    //allocate and insert a valid Iceman object at the proper location
+    virtual int init();
 
-    //at each tick, must ask Iceman object to do something
-    //will not need to check if Iceman died--assume it cannot die here
-    //only deals with Iceman
-    virtual int move(){}
+    //
+    virtual int move();
 
-    //frees any dynamically allocated data that was allocated during calls to init() or move()
-    //likely does the same thing as dtor
-    virtual void cleanup(){}
-
+    //page 10
+    virtual void cleanUp();
 };
-
-class Actor{};
-
-StudentWorld* getWorld();
-
 
 #endif //ICEMAN_STUDENTWORLD_H
