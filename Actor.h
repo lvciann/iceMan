@@ -4,22 +4,25 @@
 #include "GraphObject.h"
 #include "StudentWorld.h"
 
+//forward declare StudentWorld class
 class StudentWorld;
 
+//Actor class
 class Actor : public GraphObject {
 public:
 	Actor(StudentWorld* world, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
 
 	~Actor();
+
 	virtual void doSomething();
-	//virtual bool isActive() = 0;
+
+	virtual bool isActive();
+
+	virtual bool canActorsPassThroughMe() const;
 
 	StudentWorld* getWorld();
 
-
 	StudentWorld* theWorld;
-
-
 };
 
 class People : public Actor {
@@ -33,7 +36,6 @@ public:
 
 };
 
-
 class Iceman : public People {
 public:
 
@@ -43,48 +45,69 @@ public:
 
 	void doSomething();
 
-
 };
 
 class Ice : public Actor {
 public:
+
 	Ice(StudentWorld* world, int startX, int startY);
 
 };
 
-class Boulders : public Actor {
+class Boulder : public Actor {
+public:
 
+	Boulder(StudentWorld* world, int startX, int startY);
+
+	virtual bool canActorsPassThroughMe() const;
 };
 
 class Squirt : public Actor {
+public:
+
+	Squirt(StudentWorld* world, int startX, int startY, Direction dir);
 
 };
 
 class OilBarrel : public Actor {
+public:
+
+	OilBarrel(StudentWorld* world, int startX, int startY);
 
 };
 
 class GoldNugget : public Actor {
+public:
+
+	GoldNugget(StudentWorld* world, int startX, int startY);
 
 };
 
 class Sonar : public Actor {
+public:
 
+	Sonar(StudentWorld* world, int startX, int startY);
 
 };
 
 class WaterPool : public Actor {
+public:
 
+	WaterPool(StudentWorld* world, int startX, int startY);
 
 };
 
 class Protestor : public People {
+public:
 
+	Protestor(StudentWorld* world, int startX, int startY, int imageID);
 	//both protestors can pick up gold nuggets
 };
 
 class HardcoreProtestor : public Protestor {
+public:
 
+	HardcoreProtestor(StudentWorld* world, int startX, int startY);
 
 };
 

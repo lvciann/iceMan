@@ -1,5 +1,7 @@
 #include "Actor.h"
-#include "StudentWorld.h"
+
+
+///////////////////////////////////// Actor Base Class /////////////////////////////////////
 
 Actor::Actor(StudentWorld* world, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
 	GraphObject(imageID, startX, startY, dir, size, depth) {
@@ -8,13 +10,20 @@ Actor::Actor(StudentWorld* world, int imageID, int startX, int startY, Direction
 	setVisible(true);
 }
 
-Actor::~Actor() {};
-void Actor::doSomething() {};
-//virtual bool isActive() = 0;
+Actor::~Actor() {}
+
+void Actor::doSomething() {}
+
+bool Actor::isActive() { return false; }
+
+bool Actor::canActorsPassThroughMe() const { return false; }
+
 
 StudentWorld* Actor::getWorld() {
 	return theWorld;
 }
+
+///////////////////////////////////// People Class /////////////////////////////////////
 
 People::People(StudentWorld* world, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
 	Actor(world, imageID, startX, startY, dir, size, depth) {
@@ -24,6 +33,8 @@ People::People(StudentWorld* world, int imageID, int startX, int startY, Directi
 
 People::~People() {}
 
+
+///////////////////////////////////// Iceman Class /////////////////////////////////////
 
 Iceman::Iceman(StudentWorld* world, int startX, int startY) :
 	People(world, IID_PLAYER, 30, 60, right, 1.0, 0) {
@@ -63,16 +74,79 @@ void Iceman::doSomething() {
 		case KEY_PRESS_SPACE:
 			//... add a Squirt in front of the player...;
 			break;
-			// etcÖ
+			// etc…
 		}
 	}
 
 }
+
+///////////////////////////////////// Protestor Class /////////////////////////////////////
+
+Protestor::Protestor(StudentWorld* world, int startX, int startY, int imageID) :
+	People(world, imageID, startX, startY, left, 1.0, 0) {
+
+
+}
+
+///////////////////////////////////// Hardcore Protestor Class /////////////////////////////////////
+
+HardcoreProtestor::HardcoreProtestor(StudentWorld* world, int startX, int startY) :
+	Protestor(world, startX, startY, IID_HARD_CORE_PROTESTER) {
+
+}
+
+///////////////////////////////////// Ice Class /////////////////////////////////////
 
 Ice::Ice(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_ICE, startX, startY, right, 0.25, 3) {
 
 }
 
-// Students:  Add code to this file (if you wish), Actor.h, StudentWorld.h, and StudentWorld.cpp
+///////////////////////////////////// Boulder Class /////////////////////////////////////
 
+Boulder::Boulder(StudentWorld* world, int startX, int startY) :
+	Actor(world, IID_BOULDER, startX, startY, down, 1.0, 1) {
+
+}
+
+bool Boulder::canActorsPassThroughMe() const {
+	return false;
+}
+
+
+///////////////////////////////////// Squirt Class /////////////////////////////////////
+
+Squirt::Squirt(StudentWorld* world, int startX, int startY, Direction dir) :
+	Actor(world, IID_WATER_SPURT, startX, startY, dir, 1.0, 1) {
+
+}
+
+///////////////////////////////////// Oil Barrel Class /////////////////////////////////////
+
+OilBarrel::OilBarrel(StudentWorld* world, int startX, int startY) :
+	Actor(world, IID_BARREL, startX, startY, right, 1.0, 2) {
+
+	//setVisible(false);
+}
+
+///////////////////////////////////// Gold Nugget Class /////////////////////////////////////
+
+GoldNugget::GoldNugget(StudentWorld* world, int startX, int startY) :
+	Actor(world, IID_GOLD, startX, startY, right, 1.0, 2) {
+
+}
+
+///////////////////////////////////// Sonar Class /////////////////////////////////////
+
+Sonar::Sonar(StudentWorld* world, int startX, int startY) :
+	Actor(world, IID_SONAR, startX, startY, right, 1.0, 2) {
+
+
+}
+
+///////////////////////////////////// Water Pool Class /////////////////////////////////////
+
+WaterPool::WaterPool(StudentWorld* world, int startX, int startY) :
+	Actor(world, IID_WATER_POOL, startX, startY, right, 1.0, 2) {
+
+}
