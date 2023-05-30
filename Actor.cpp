@@ -33,6 +33,8 @@ People::People(StudentWorld* world, int imageID, int startX, int startY, Directi
 
 People::~People() {}
 
+bool People::isActive() { return false; }
+
 
 ///////////////////////////////////// Iceman Class /////////////////////////////////////
 
@@ -40,7 +42,17 @@ Iceman::Iceman(StudentWorld* world, int startX, int startY) :
 	People(world, IID_PLAYER, 30, 60, right, 1.0, 0) {
 
 	health = 10;
+	ammo = 5;
+	gold = 0;
+}
 
+bool Iceman::isActive() {
+
+	if (getHealth() > 0) {
+		return true;
+	}
+
+	return false;
 }
 
 int Iceman::getHealth() {
@@ -48,7 +60,29 @@ int Iceman::getHealth() {
 	return health;
 }
 
+int Iceman::getAmmo() {
+
+	return ammo;
+}
+
+int Iceman::getGold() {
+
+	return gold;
+}
+
+void Iceman::setAmmo() {
+	ammo++;
+}
+
+void Iceman::setGold() {
+	gold++;
+}
+
 void Iceman::doSomething() {
+
+	if (!isActive()) {
+		return;
+	}
 
 	int ch;
 	if (getWorld()->getKey(ch) == true)
@@ -57,18 +91,40 @@ void Iceman::doSomething() {
 		switch (ch)
 		{
 		case KEY_PRESS_LEFT:
-			moveTo(getX() - 1, getY());
-			//... move player to the left ...;
+
+			if (getDirection() == left && getX() > 0) {
+				moveTo(getX() - 1, getY());
+			}
+
+			setDirection(left);
+
 			break;
 		case KEY_PRESS_RIGHT:
-			moveTo(getX() + 1, getY());
-			//... move player to the right ...;
+
+			if (getDirection() == right && getX() < 56) {		//why 56?
+				moveTo(getX() + 1, getY());
+			}
+
+			setDirection(right);
+
 			break;
 		case KEY_PRESS_UP:
-			moveTo(getX(), getY() + 1);
+
+			if (getDirection() == up && getY() < 60) {
+				moveTo(getX(), getY() + 1);
+			}
+
+			setDirection(up);
+
 			break;
 		case KEY_PRESS_DOWN:
-			moveTo(getX(), getY() - 1);
+
+			if (getDirection() == down && getY() > 0) {
+				moveTo(getX(), getY() - 1);
+			}
+
+			setDirection(down);
+
 			break;
 
 		case KEY_PRESS_SPACE:

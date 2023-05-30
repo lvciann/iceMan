@@ -12,7 +12,7 @@ class Actor : public GraphObject {
 public:
 	Actor(StudentWorld* world, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
 
-	~Actor();
+	virtual ~Actor();
 
 	virtual void doSomething();
 
@@ -28,7 +28,10 @@ public:
 class People : public Actor {
 public:
 	People(StudentWorld* world, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
+
 	virtual ~People();
+
+	virtual bool isActive();
 
 	//virtual void isAnnoyed(){}		//all people can be annoyed: Iceman, Protestors
 
@@ -41,9 +44,24 @@ public:
 
 	Iceman(StudentWorld* world, int startX, int startY);
 
+	virtual bool isActive();
+
 	int getHealth();
 
+	int getAmmo();
+
+	int getGold();
+
+	void setAmmo();
+
+	void setGold();
+
 	void doSomething();
+
+private:
+
+	int ammo;
+	int gold;
 
 };
 
@@ -51,6 +69,8 @@ class Ice : public Actor {
 public:
 
 	Ice(StudentWorld* world, int startX, int startY);
+
+	//virtual bool isActive();
 
 };
 
@@ -60,12 +80,16 @@ public:
 	Boulder(StudentWorld* world, int startX, int startY);
 
 	virtual bool canActorsPassThroughMe() const;
+
+	//virtual bool isActive();
 };
 
 class Squirt : public Actor {
 public:
 
 	Squirt(StudentWorld* world, int startX, int startY, Direction dir);
+
+	//virtual bool isActive();
 
 };
 
@@ -74,12 +98,16 @@ public:
 
 	OilBarrel(StudentWorld* world, int startX, int startY);
 
+	//virtual bool isActive();
+
 };
 
 class GoldNugget : public Actor {
 public:
 
 	GoldNugget(StudentWorld* world, int startX, int startY);
+
+	//virtual bool isActive();
 
 };
 
@@ -88,12 +116,16 @@ public:
 
 	Sonar(StudentWorld* world, int startX, int startY);
 
+	//virtual bool isActive();
+
 };
 
 class WaterPool : public Actor {
 public:
 
 	WaterPool(StudentWorld* world, int startX, int startY);
+
+	//virtual bool isActive();
 
 };
 
@@ -102,6 +134,8 @@ public:
 
 	Protestor(StudentWorld* world, int startX, int startY, int imageID);
 	//both protestors can pick up gold nuggets
+
+	//virtual bool isActive();
 };
 
 class HardcoreProtestor : public Protestor {
@@ -109,7 +143,10 @@ public:
 
 	HardcoreProtestor(StudentWorld* world, int startX, int startY);
 
+	//virtual bool isActive();
+
 };
 
 
 #endif //ACTOR_H_
+
