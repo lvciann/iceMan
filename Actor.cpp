@@ -203,10 +203,6 @@ Boulder::Boulder(StudentWorld* world, int startX, int startY) :
 
 void Boulder::doSomething() {}
 
-void Boulder::move(int x, int y) {
-
-	moveTo(x, y);
-}
 
 bool Boulder::canActorsPassThroughMe() const {
 	return false;
@@ -220,7 +216,7 @@ Squirt::Squirt(StudentWorld* world, int startX, int startY, Direction dir) :
 
 }
 
-void Ice::doSomething() {}
+void Squirt::doSomething() {}
 
 ///////////////////////////////////// Oil Barrel Class /////////////////////////////////////
 
