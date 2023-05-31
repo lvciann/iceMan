@@ -40,7 +40,7 @@ void People::setGold(int i) {
 
 bool People::isActive() {
 	
-	if (getHealth() > 0) {
+	if (health > 0) {
 		return true;
 	}
 
@@ -199,15 +199,46 @@ void Ice::doSomething(){}
 Boulder::Boulder(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_BOULDER, startX, startY, down, 1.0, 1) {
 
+	lifespan = 30;
 }
 
-void Boulder::doSomething() {}
+void Boulder::doSomething() {
 
+	if (waiting) {
 
-bool Boulder::canActorsPassThroughMe() const {
+		if (lifespan > 0) {
+			lifespan--;
+		}
+
+		else {
+			getWorld()->playSound(SOUND_FALLING_ROCK);
+			moveTo(getX(), getY() - 1);
+		}
+	}
+
+}
+
+void Boulder::isWaiting(bool amIWaiting) {
+
+	waiting = amIWaiting;
+}
+
+bool Boulder::isActive() {
+
+	if (state) {
+		return true;
+	}
+
 	return false;
 }
 
+void Boulder::setDead() {
+
+	state = false;
+}
+bool Boulder::canActorsPassThroughMe() const {
+	return false;
+}
 
 ///////////////////////////////////// Squirt Class /////////////////////////////////////
 
@@ -255,3 +286,6 @@ WaterPool::WaterPool(StudentWorld* world, int startX, int startY) :
 }
 
 void WaterPool::doSomething() {}
+
+
+///////////////////////////////////// Other Functions /////////////////////////////////////

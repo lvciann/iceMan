@@ -47,6 +47,8 @@ public:
 
 	Iceman(StudentWorld* world, int startX, int startY);
 
+	virtual bool isActive();
+
 	int getHealth();
 
 	int getAmmo();
@@ -90,9 +92,19 @@ public:
 
 	void doSomething();
 
+	void isWaiting(bool amIWaiting);
+
 	virtual bool canActorsPassThroughMe() const;
 
-	//virtual bool isActive();
+	virtual bool isActive();
+
+	virtual void setDead();
+
+private:
+
+	int lifespan;
+	bool waiting;
+	bool state;
 };
 
 class Squirt : public Actor {
