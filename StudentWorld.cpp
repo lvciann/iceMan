@@ -1,7 +1,3 @@
-//
-// Created by Luciann Valencia on 5/15/23.
-//
-
 #include "StudentWorld.h"
 #include <string>
 #include <algorithm>
@@ -64,18 +60,29 @@ int StudentWorld::init()
 //
 int StudentWorld::move()
 {
-    //part 1: JUST THE ICEMAN--during each tick, must ask Iceman object to do something;
-    if (iceman != nullptr) {   //if iceman is alive
+    //update game status line:
+    stats();
+    
+    //give each actor a chance to do something
+    if(iceman->isActive() == true){ //if iceman is alive
         //ask iceman to do something
         iceman->doSomething();
         return GWSTATUS_CONTINUE_GAME;      // so that the game can continue
     }
-
+//    for(){
+//
+//        return GWSTATUS_CONTINUE_GAME;
+//    }
+    
     // This code is here merely to allow the game to build, run, and terminate after you hit enter a few times.
     // Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.
 
     decLives();
     return GWSTATUS_PLAYER_DIED;
+    
+    //todo:
+    //if iceman has collected all of the barrels, continue game
+    
 }
 
 //page 10
@@ -94,6 +101,7 @@ void StudentWorld::cleanUp()
     }
 }
 
+
 int StudentWorld::minCalc(int a, int b){
     if(a < b){
         return a;
@@ -108,6 +116,20 @@ int StudentWorld::maxCalc(int a, int b){
     return b;
 }
 
+void StudentWorld::stats(){
+    //must update the status text on top of the screen
+    string iceMan_stats = "LEVEL: " + to_string(getLevel()) + "  " +
+                          "LIVES: " + to_string(getLives()) + "  " +
+                          "HEALTH: " + to_string(iceman->getHealth()) + "  "
+//                          + "WATER: " + to_string() + "  "
+                          + "GOLD: " + to_string(iceman->getGold()) + "  "
+//                        + "OIL LEFT: " + to_string() + "  " + //barrel dist - amount collected
+//                          "SONAR: " + to_string() + "  "
+                          + "SCORE: " + to_string(getScore()) + "  ";
+    
+    setGameStatText(iceMan_stats);
+}
+
 //------------------------------------area for object distribution in oil field---------
 int StudentWorld::boulderDist(){
     int B = minCalc((GameWorld::getLevel()/2) + 2, 9);
@@ -116,6 +138,7 @@ int StudentWorld::boulderDist(){
 
 int StudentWorld::goldNuggetDist(){
     int G = maxCalc((5 - GameWorld::getLevel()), 21);
+    
     return G;
 }
 
@@ -125,4 +148,8 @@ int StudentWorld::barrelDist(){
 }
 //------------------------------------area for object distribution in oil field---------
 
-
+void StudentWorld::clearIce(int x, int y){
+    //if iceman's location == the location of ice, delete ice
+        delete ice[x][y];
+    
+}
