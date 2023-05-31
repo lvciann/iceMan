@@ -4,6 +4,7 @@
 
 #include "StudentWorld.h"
 #include <string>
+#include <algorithm>
 using namespace std;
 
 
@@ -19,7 +20,6 @@ iceman(nullptr) {
             ice[i][j] = nullptr;
         }
     }
-
 }
 
 StudentWorld::~StudentWorld() {
@@ -30,7 +30,7 @@ StudentWorld::~StudentWorld() {
     for (int i = 0; i < ICE_WIDTH; ++i) { //for rows
         for (int j = 0; j < ICE_HEIGHT; ++j) { //for columns
             if (ice[i][j] != nullptr) {
-                delete ice[i][j];
+                delete ice[i][j]; //shows an error
             }
         }
     }
@@ -41,12 +41,19 @@ StudentWorld::~StudentWorld() {
 //allocate and insert a valid Iceman object at the proper location
 int StudentWorld::init()
 {
-    this->iceman = new Iceman(this, 30, 60);
+    this->iceman = new Iceman(this, 30, 60); //position of iceman
 
-    for (int i = 0; i < ICE_HEIGHT; ++i) { //for rows
-        for (int j = 0; j < ICE_WIDTH; ++j) { //for columns
-            if (j < 30 || j > 34 || (j >= 30 && j <= 34 && i < 4)) {
+    for (int i = 0; i < ICE_WIDTH; ++i) { //for columns
+        for (int j = 0; j < ICE_HEIGHT; ++j) { //for rows
+            if (i < 30 || i > 33 || (i >= 30 && i <= 34 && j < 4)) {
                 ice[i][j] = new Ice(this, i, j);
+            }
+            //testing for orientation--delete asap
+            if(i == 0 && j == 0){
+                delete ice[0][0];
+            }
+            if(i == 30 && j == 0){
+                delete ice[30][0];
             }
         }
     }
@@ -86,4 +93,36 @@ void StudentWorld::cleanUp()
         }
     }
 }
+
+int StudentWorld::minCalc(int a, int b){
+    if(a < b){
+        return a;
+    }
+    return b;
+}
+
+int StudentWorld::maxCalc(int a, int b){
+    if(a > b){
+        return a;
+    }
+    return b;
+}
+
+//------------------------------------area for object distribution in oil field---------
+int StudentWorld::boulderDist(){
+    int B = minCalc((GameWorld::getLevel()/2) + 2, 9);
+    return B;
+}
+
+int StudentWorld::goldNuggetDist(){
+    int G = maxCalc((5 - GameWorld::getLevel()), 21);
+    return G;
+}
+
+int StudentWorld::barrelDist(){
+    int L = minCalc((2 + getLevel()), 21);
+    return L;
+}
+//------------------------------------area for object distribution in oil field---------
+
 
