@@ -31,11 +31,14 @@ public:
 
 	virtual ~People();
 
+	virtual void setGold(int i);
+
 	virtual bool isActive();
 
 	//virtual void isAnnoyed(){}		//all people can be annoyed: Iceman, Protestors
 
 	int health;
+	int gold;
 
 };
 
@@ -44,24 +47,28 @@ public:
 
 	Iceman(StudentWorld* world, int startX, int startY);
 
-	virtual bool isActive();
-
 	int getHealth();
 
 	int getAmmo();
 
 	int getGold();
 
+	int getBarrel();
+
 	void setAmmo();
 
 	void setGold();
 
+	void setBarrel();
+
 	void doSomething();
+
+	bool hasCompletedLevel(int i);
 
 private:
 
+	int barrels;
 	int ammo;
-	int gold;
 
 };
 
@@ -69,6 +76,8 @@ class Ice : public Actor {
 public:
 
 	Ice(StudentWorld* world, int startX, int startY);
+
+	void doSomething();
 
 	//virtual bool isActive();
 
@@ -79,7 +88,11 @@ public:
 
 	Boulder(StudentWorld* world, int startX, int startY);
 
+	void doSomething();
+
 	virtual bool canActorsPassThroughMe() const;
+
+	virtual void move(int x, int y);
 
 	//virtual bool isActive();
 };
@@ -88,6 +101,8 @@ class Squirt : public Actor {
 public:
 
 	Squirt(StudentWorld* world, int startX, int startY, Direction dir);
+
+	void doSomething();
 
 	//virtual bool isActive();
 
@@ -98,6 +113,8 @@ public:
 
 	OilBarrel(StudentWorld* world, int startX, int startY);
 
+	void doSomething();
+
 	//virtual bool isActive();
 
 };
@@ -106,6 +123,8 @@ class GoldNugget : public Actor {
 public:
 
 	GoldNugget(StudentWorld* world, int startX, int startY);
+
+	void doSomething();
 
 	//virtual bool isActive();
 
@@ -116,6 +135,8 @@ public:
 
 	Sonar(StudentWorld* world, int startX, int startY);
 
+	void doSomething();
+
 	//virtual bool isActive();
 
 };
@@ -125,6 +146,8 @@ public:
 
 	WaterPool(StudentWorld* world, int startX, int startY);
 
+	void doSomething();
+
 	//virtual bool isActive();
 
 };
@@ -133,6 +156,10 @@ class Protestor : public People {
 public:
 
 	Protestor(StudentWorld* world, int startX, int startY, int imageID);
+
+	void doSomething();
+
+	
 	//both protestors can pick up gold nuggets
 
 	//virtual bool isActive();
@@ -142,6 +169,8 @@ class HardcoreProtestor : public Protestor {
 public:
 
 	HardcoreProtestor(StudentWorld* world, int startX, int startY);
+
+	void doSomething();
 
 	//virtual bool isActive();
 

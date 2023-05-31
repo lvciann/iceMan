@@ -33,7 +33,19 @@ People::People(StudentWorld* world, int imageID, int startX, int startY, Directi
 
 People::~People() {}
 
-bool People::isActive() { return false; }
+void People::setGold(int i) {
+
+	gold = i;
+}
+
+bool People::isActive() {
+	
+	if (getHealth() > 0) {
+		return true;
+	}
+
+	return false;
+}
 
 
 ///////////////////////////////////// Iceman Class /////////////////////////////////////
@@ -70,12 +82,21 @@ int Iceman::getGold() {
 	return gold;
 }
 
+int Iceman::getBarrel() {
+
+	return barrels;
+}
+
 void Iceman::setAmmo() {
 	ammo++;
 }
 
 void Iceman::setGold() {
 	gold++;
+}
+
+void Iceman::setBarrel() {
+	barrels++;
 }
 
 void Iceman::doSomething() {
@@ -136,6 +157,15 @@ void Iceman::doSomething() {
 
 }
 
+bool Iceman::hasCompletedLevel(int i) {
+
+	if (barrels == i) {
+		return true;
+	}
+
+	return false;
+}
+
 ///////////////////////////////////// Protestor Class /////////////////////////////////////
 
 Protestor::Protestor(StudentWorld* world, int startX, int startY, int imageID) :
@@ -144,12 +174,16 @@ Protestor::Protestor(StudentWorld* world, int startX, int startY, int imageID) :
 
 }
 
+void Protestor::doSomething() {}
+
 ///////////////////////////////////// Hardcore Protestor Class /////////////////////////////////////
 
 HardcoreProtestor::HardcoreProtestor(StudentWorld* world, int startX, int startY) :
 	Protestor(world, startX, startY, IID_HARD_CORE_PROTESTER) {
 
 }
+
+void HardcoreProtestor::doSomething() {}
 
 ///////////////////////////////////// Ice Class /////////////////////////////////////
 
@@ -158,11 +192,20 @@ Ice::Ice(StudentWorld* world, int startX, int startY) :
 
 }
 
+void Ice::doSomething(){}
+
 ///////////////////////////////////// Boulder Class /////////////////////////////////////
 
 Boulder::Boulder(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_BOULDER, startX, startY, down, 1.0, 1) {
 
+}
+
+void Boulder::doSomething() {}
+
+void Boulder::move(int x, int y) {
+
+	moveTo(x, y);
 }
 
 bool Boulder::canActorsPassThroughMe() const {
@@ -177,6 +220,8 @@ Squirt::Squirt(StudentWorld* world, int startX, int startY, Direction dir) :
 
 }
 
+void Ice::doSomething() {}
+
 ///////////////////////////////////// Oil Barrel Class /////////////////////////////////////
 
 OilBarrel::OilBarrel(StudentWorld* world, int startX, int startY) :
@@ -185,12 +230,16 @@ OilBarrel::OilBarrel(StudentWorld* world, int startX, int startY) :
 	//setVisible(false);
 }
 
+void OilBarrel::doSomething(){}
+
 ///////////////////////////////////// Gold Nugget Class /////////////////////////////////////
 
 GoldNugget::GoldNugget(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_GOLD, startX, startY, right, 1.0, 2) {
 
 }
+
+void GoldNugget::doSomething() {}
 
 ///////////////////////////////////// Sonar Class /////////////////////////////////////
 
@@ -200,9 +249,13 @@ Sonar::Sonar(StudentWorld* world, int startX, int startY) :
 
 }
 
+void Sonar::doSomething() {}
+
 ///////////////////////////////////// Water Pool Class /////////////////////////////////////
 
 WaterPool::WaterPool(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_WATER_POOL, startX, startY, right, 1.0, 2) {
 
 }
+
+void WaterPool::doSomething() {}
