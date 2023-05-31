@@ -5,7 +5,8 @@
 
 Actor::Actor(StudentWorld* world, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
 	GraphObject(imageID, startX, startY, dir, size, depth) {
-
+	
+	health = 0;
 	theWorld = world;
 	setVisible(true);
 }
@@ -171,6 +172,17 @@ bool Iceman::hasCompletedLevel(int i) {
 Protestor::Protestor(StudentWorld* world, int startX, int startY, int imageID) :
 	People(world, imageID, startX, startY, left, 1.0, 0) {
 
+	health = 5;
+
+}
+
+bool Protestor::isActive() {
+
+	if (health > 0) {
+		return true;
+	}
+
+	return false;
 
 }
 
@@ -181,6 +193,17 @@ void Protestor::doSomething() {}
 HardcoreProtestor::HardcoreProtestor(StudentWorld* world, int startX, int startY) :
 	Protestor(world, startX, startY, IID_HARD_CORE_PROTESTER) {
 
+	health = 20;
+}
+
+bool HardcoreProtestor::isActive() {
+
+	if (health > 0) {
+		return true;
+	}
+
+	return false;
+
 }
 
 void HardcoreProtestor::doSomething() {}
@@ -190,6 +213,11 @@ void HardcoreProtestor::doSomething() {}
 Ice::Ice(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_ICE, startX, startY, right, 0.25, 3) {
 
+}
+
+bool Ice::isActive() { 
+
+	return true;
 }
 
 void Ice::doSomething(){}
@@ -249,12 +277,22 @@ Squirt::Squirt(StudentWorld* world, int startX, int startY, Direction dir) :
 
 void Squirt::doSomething() {}
 
+bool Squirt::isActive() {
+
+	return true;
+
+}
+
 ///////////////////////////////////// Oil Barrel Class /////////////////////////////////////
 
 OilBarrel::OilBarrel(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_BARREL, startX, startY, right, 1.0, 2) {
 
 	//setVisible(false);
+}
+
+bool OilBarrel::isActive() {
+	return true;
 }
 
 void OilBarrel::doSomething(){}
@@ -264,6 +302,11 @@ void OilBarrel::doSomething(){}
 GoldNugget::GoldNugget(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_GOLD, startX, startY, right, 1.0, 2) {
 
+}
+
+bool GoldNugget::isActive() {
+
+	return true;
 }
 
 void GoldNugget::doSomething() {}
@@ -276,12 +319,23 @@ Sonar::Sonar(StudentWorld* world, int startX, int startY) :
 
 }
 
+bool Sonar::isActive(){
+	return true;
+
+}
+
 void Sonar::doSomething() {}
 
 ///////////////////////////////////// Water Pool Class /////////////////////////////////////
 
 WaterPool::WaterPool(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_WATER_POOL, startX, startY, right, 1.0, 2) {
+
+}
+
+bool WaterPool::isActive() {
+
+	return true;
 
 }
 

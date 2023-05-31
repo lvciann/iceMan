@@ -22,6 +22,8 @@ public:
 
 	StudentWorld* getWorld();
 
+	int health;
+
 	StudentWorld* theWorld;
 };
 
@@ -37,7 +39,6 @@ public:
 
 	//virtual void isAnnoyed(){}		//all people can be annoyed: Iceman, Protestors
 
-	int health;
 	int gold;
 
 };
@@ -81,7 +82,7 @@ public:
 
 	void doSomething();
 
-	//virtual bool isActive();
+	virtual bool isActive();
 
 };
 
@@ -114,7 +115,7 @@ public:
 
 	void doSomething();
 
-	//virtual bool isActive();
+	virtual bool isActive();
 
 };
 
@@ -125,7 +126,7 @@ public:
 
 	void doSomething();
 
-	//virtual bool isActive();
+	virtual bool isActive();
 
 };
 
@@ -136,7 +137,7 @@ public:
 
 	void doSomething();
 
-	//virtual bool isActive();
+	virtual bool isActive();
 
 };
 
@@ -147,7 +148,7 @@ public:
 
 	void doSomething();
 
-	//virtual bool isActive();
+	virtual bool isActive();
 
 };
 
@@ -158,7 +159,7 @@ public:
 
 	void doSomething();
 
-	//virtual bool isActive();
+	virtual bool isActive();
 
 };
 
@@ -172,7 +173,7 @@ public:
 	
 	//both protestors can pick up gold nuggets
 
-	//virtual bool isActive();
+	virtual bool isActive();
 };
 
 class HardcoreProtestor : public Protestor {
@@ -182,7 +183,7 @@ public:
 
 	void doSomething();
 
-	//virtual bool isActive();
+	virtual bool isActive();
 
 };
 
