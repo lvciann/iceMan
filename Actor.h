@@ -92,8 +92,6 @@ public:
 
 	virtual bool canActorsPassThroughMe() const;
 
-	virtual void move(int x, int y);
-
 	//virtual bool isActive();
 };
 
