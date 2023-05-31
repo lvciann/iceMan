@@ -8,6 +8,7 @@
 #include "GameConstants.h"
 #include "Actor.h"
 #include <vector>
+#include <string>
 
 //we want create a constant to be able to use 60 and 64 continuously
 //we want to create a constant to be able to use 60 and 64 continuously
@@ -34,17 +35,26 @@ public:
     virtual int move();
     //page 10
     virtual void cleanUp();
+    //prints stats on top of screen
+    void stats();
     //compares 2 parameters and returns smaller number
     int minCalc(int a, int b);
     //compares 2 parameters and returns lerger number
     int maxCalc(int a, int b);
-    //boulder distribution
+    //boulder distribution--returns # of boulders
     int boulderDist();
-    //gold nugget distribution
+    //gold nugget distribution--returns # of gold
     int goldNuggetDist();
-    //barrel distribution
+    //barrel distribution--returns # of barrels
     int barrelDist();
+    // Annoy the IceMan--if annoyed enough, will die
+    //everytime it comes across a protestor, it will get "annoyed"/health will decrease. if health == 0, dies. sound will play
+    void annoyIceMan();
+    // Clear a 4x4 region of Ice.
+    //everywhere the iceman(4x4 pixels) goes, ice will be erased
+    void clearIce(int x, int y);
 };
 
 
 #endif //ICEMAN_STUDENTWORLD_H
+
