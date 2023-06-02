@@ -18,6 +18,8 @@ public:
 
 	virtual bool isActive();
 
+	virtual void setDead();
+
 	virtual bool canActorsPassThroughMe() const;
 
 	StudentWorld* getWorld();
@@ -34,6 +36,8 @@ public:
 	virtual ~People();
 
 	virtual void setGold(int i);
+
+	virtual void setDead();
 
 	virtual bool isActive();
 
@@ -58,6 +62,8 @@ public:
 
 	int getBarrel();
 
+	virtual void setDead();
+
 	void setAmmo();
 
 	void setGold();
@@ -72,6 +78,7 @@ private:
 
 	int barrels;
 	int ammo;
+	int charge;
 
 };
 

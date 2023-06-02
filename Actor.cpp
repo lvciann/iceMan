@@ -17,6 +17,8 @@ void Actor::doSomething() {}
 
 bool Actor::isActive() { return false; }
 
+void Actor::setDead() {}
+
 bool Actor::canActorsPassThroughMe() const { return false; }
 
 
@@ -39,6 +41,8 @@ void People::setGold(int i) {
 	gold = i;
 }
 
+void People::setDead(){}
+
 bool People::isActive() {
 	
 	if (health > 0) {
@@ -57,6 +61,7 @@ Iceman::Iceman(StudentWorld* world, int startX, int startY) :
 	health = 10;
 	ammo = 5;
 	gold = 0;
+	charge = 1;
 }
 
 bool Iceman::isActive() {
@@ -86,6 +91,11 @@ int Iceman::getGold() {
 int Iceman::getBarrel() {
 
 	return barrels;
+}
+
+void Iceman::setDead() {
+
+	health = 0;
 }
 
 void Iceman::setAmmo() {
@@ -150,9 +160,65 @@ void Iceman::doSomething() {
 			break;
 
 		case KEY_PRESS_SPACE:
-			//... add a Squirt in front of the player...;
+			
+			if (getDirection() == left) {
+
+				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
+				Squirt* sq = new Squirt(getWorld(), getX() - 1, getY(), left);
+				delete sq;
+
+			}
+
+			else if (getDirection() == right) {
+
+				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
+				Squirt* sq = new Squirt(getWorld(), getX() + 1, getY(), right);
+
+				delete sq;
+			}
+
+			else if (getDirection() == up) {
+
+				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
+				Squirt* sq = new Squirt(getWorld(), getX(), getY() + 1, up);
+
+				delete sq;
+			}
+
+			else if (getDirection() == down) {
+
+				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
+				Squirt* sq = new Squirt(getWorld(), getX(), getY() - 1, down);
+
+				delete sq;
+			}
 			break;
-			// etc…
+
+		case KEY_PRESS_TAB:
+
+			gold--;
+			GoldNugget* nug = new GoldNugget(getWorld(), getX(), getY());
+
+			break;
+
+		case KEY_PRESS_ESCAPE:
+
+			setDead();
+
+			break;
+
+		case 'z':
+
+			charge--; //have to somehow make visible using setVisible., what if create new objects w depth 0?
+
+			break;
+
+		case 'Z':
+
+			charge--;
+
+			break;
+
 		}
 	}
 
