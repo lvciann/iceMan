@@ -8,7 +8,7 @@ Actor::Actor(StudentWorld* world, int imageID, int startX, int startY, Direction
 	
 	health = 0;
 	theWorld = world;
-	setVisible(true);
+	setVisible(true);	//// change this for objects who start out invisible
 }
 
 Actor::~Actor() {}
@@ -163,33 +163,30 @@ void Iceman::doSomething() {
 			
 			if (getDirection() == left) {
 
-				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
 				Squirt* sq = new Squirt(getWorld(), getX() - 1, getY(), left);
+				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
 				delete sq;
 
 			}
 
 			else if (getDirection() == right) {
 
-				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
 				Squirt* sq = new Squirt(getWorld(), getX() + 1, getY(), right);
-
+				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
 				delete sq;
 			}
 
 			else if (getDirection() == up) {
 
-				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
 				Squirt* sq = new Squirt(getWorld(), getX(), getY() + 1, up);
-
+				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
 				delete sq;
 			}
 
 			else if (getDirection() == down) {
 
-				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
 				Squirt* sq = new Squirt(getWorld(), getX(), getY() - 1, down);
-
+				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
 				delete sq;
 			}
 			break;

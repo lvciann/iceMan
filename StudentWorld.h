@@ -71,6 +71,7 @@ public:
     int barrelRandomX();
     int barrelRandomY();
 
+
 };
 
 

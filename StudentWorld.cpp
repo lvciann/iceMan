@@ -193,3 +193,4 @@ void StudentWorld::clearIce(int x, int y){
         delete ice[x][y];
     
 }
+
