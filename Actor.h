@@ -181,6 +181,8 @@ public:
 	//both protestors can pick up gold nuggets
 
 	virtual bool isActive();
+
+	int numSquaresToMoveInCurrentDirection;
 };
 
 class HardcoreProtestor : public Protestor {

@@ -1,5 +1,5 @@
 #include "Actor.h"
-
+#include <algorithm>
 
 ///////////////////////////////////// Actor Base Class /////////////////////////////////////
 
@@ -239,6 +239,7 @@ Protestor::Protestor(StudentWorld* world, int startX, int startY, int imageID) :
 	People(world, imageID, startX, startY, left, 1.0, 0) {
 
 	health = 5;
+	numSquaresToMoveInCurrentDirection = (rand() % 56) + 4;
 
 }
 
