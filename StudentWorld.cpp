@@ -41,12 +41,12 @@ int StudentWorld::init()
             }
         }
         
+        
         //distributing game objects
-        boulderDist();
-        goldDist();
-        
-        
+        //boulderDist();
+        //goldDist();
     }
+
 
     return GWSTATUS_CONTINUE_GAME;
 }
