@@ -25,6 +25,8 @@ iceman(nullptr) {
 //allocate and insert a valid Iceman object at the proper location
 int StudentWorld::init()
 {
+//    int xAxis = 0;
+//    int yAxis = 0;
     this->iceman = new Iceman(this, 30, 60); //position of iceman
     std::vector<Actor *> actors; 
 
@@ -38,25 +40,22 @@ int StudentWorld::init()
     }
     //distributing game objects randomly
     for(int i = 0; i < boulderAmnt(); i++){
-        if(i < (ICE_WIDTH - 30 ) || i > (ICE_WIDTH - 27) || (i >= (ICE_WIDTH - 30) && i <= (ICE_WIDTH - 26) && (ICE_HEIGHT < 4))){
-            actors.push_back(new Boulder(this, boulderRandomX(), boulderRandomY()));
-        }
+        int x = boulderRandomX();
+        int y = boulderRandomY();
+        
+        actors.push_back(new Boulder(this, x, y));
+                   
     }
+
     for(int i = 0; i < goldNuggetAmnt(); i++){
-        if(i < (ICE_WIDTH - 30 ) || i > (ICE_WIDTH - 27) || (i >= (ICE_WIDTH - 30) && i <= (ICE_WIDTH - 26) && (ICE_HEIGHT < 4))){
-            actors.push_back(new GoldNugget(this, goldRandomX(), goldRandomY()));
-        }
+        actors.push_back(new GoldNugget(this, goldRandomX(), goldRandomY()));
+    
     }
     for(int i = 0; i < barrelAmnt(); i++){
         if(i < (ICE_WIDTH - 30 ) || i > (ICE_WIDTH - 27) || (i >= (ICE_WIDTH - 30) && i <= (ICE_WIDTH - 26) && (ICE_HEIGHT < 4))){
             actors.push_back(new OilBarrel(this, barrelRandomX(), barrelRandomY()));
         }
     }
-        
-        
-        
-    
-
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -120,10 +119,11 @@ void StudentWorld::stats(){
     //must update the status text on top of the screen
     string iceMan_stats = "LEVEL: " + to_string(getLevel()) + "  " +
                           "LIVES: " + to_string(getLives()) + "  " +
-                          "HEALTH: " + to_string(iceman->getHealth()) + "  "
-//                          + "WATER: " + to_string() + "  "
+                          "HEALTH: " + to_string(iceman->getHealth() * 10) + "%" + "  " +
+                          "WATER: " + to_string(iceman->getAmmo()) + "  "
                           + "GOLD: " + to_string(iceman->getGold()) + "  "
-//                        + "OIL LEFT: " + to_string() + "  " + //barrel dist - amount collected
+//                        + "OIL LEFT: " + to_string() + "
+                            //   " barrel dist - amount collected
 //                          "SONAR: " + to_string() + "  "
                           + "SCORE: " + to_string(getScore()) + "  ";
     
@@ -133,42 +133,55 @@ void StudentWorld::stats(){
 
 //------------------------------------area for actors in oil field------------------------------------
 int StudentWorld::boulderRandomX(){
-        int rX;
+    int rX = 0;
+    if(ICE_WIDTH >= 0 || ICE_WIDTH > 37 || ICE_WIDTH < 26 || ICE_WIDTH <= 60){
         rX = (rand() % 56) + 4;
-        return rX;
+    }
+    return rX;
 }
 int StudentWorld::boulderRandomY(){
-    int rY;
-    rY = rand() % 60;
+    int rY = 0;
+    if(ICE_HEIGHT <= 50 || ICE_HEIGHT >= 20){
+        rY = rand() % 60;
+    }
     return rY;
 }
 int StudentWorld::goldRandomX(){
     int rX;
-    rX = (rand() % 56) + 4;
-    return rX;
+    if(ICE_WIDTH >= 0 || ICE_WIDTH <60){
+        rX = (rand() % 56) + 4;
+    }
+        return rX;
 }
 int StudentWorld::goldRandomY(){
     int rY;
-    rY = rand() % 60;
-    return rY;
+    if(ICE_HEIGHT >= 0 || ICE_HEIGHT <= 56){
+        rY = rand() % 60;
+    }
+        return rY;
 }
 int StudentWorld::barrelRandomX(){
     int rX;
-    rX = (rand() % 56) + 4;
-    return rX;
+    if(ICE_WIDTH >= 0 || ICE_WIDTH <60){
+        rX = (rand() % 56) + 4;
+    }
+        return rX;
+    
 }
 int StudentWorld::barrelRandomY(){
     int rY;
-    rY = rand() % 60;
+    if(ICE_HEIGHT >= 0 || ICE_HEIGHT <= 56){
+        rY = rand() % 60;
+    }
     return rY;
 }
+
 int StudentWorld::boulderAmnt(){
     int A = min(int (getLevel()/2) + 2, 9);
     return A;
 }
 int StudentWorld::goldNuggetAmnt(){
-//    int G = max(5-((int)getLevel()/2), 2);
-    int G = 5;
+    int G = max(5-((int)getLevel()/2), 2);
     return G;
 }
 int StudentWorld::barrelAmnt(){
@@ -185,16 +198,24 @@ void StudentWorld::clearIce(int x, int y){
 
         delete ice[x][y];
 }
+//no dirt behind object
+//bool StudentWorld::noIceBehindObject(int x, int y) {
+//    bool status = false;
+//    for(int i = x; i < x + 4; i++){
+//        for (int j = y; j < y + 4; j++){
+//            if(isIce(x, y)){ //if there is ice, return status as true, delete ice
+//                status = true;
+//                Ice *tempIce = ice[i][j];
+//                delete tempIce;
+//            }
+//        }
+//    }
+//    return status;
+//}
 //checking if there is ice here
-bool StudentWorld::isIce(){
-    for(int i = 0; i < ICE_HEIGHT; i++){ //check rows
-        for(int j = 0; j < ICE_WIDTH; j++){ //check column
-        //check if ice is pointing to nothing
-            if(ice[i][j] != 0){
-                return false;
-            }
-        }
+bool StudentWorld::isIce(int x, int y){
+    if(ice[x][y] != 0){
+        return true;
     }
-    
-    return true;
+    return false;
 }
