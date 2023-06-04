@@ -391,23 +391,31 @@ Boulder::Boulder(StudentWorld* world, int startX, int startY) :
 
 void Boulder::doSomething() {
 
-	if (waiting) {
+	if (!(getWorld()->isIce(getX(), getY() - 1))) {
+		if (!(getWorld()->isIce(getX() + 1, getY() - 1))) {
+			if (!(getWorld()->isIce(getX() + 2, getY() - 1))) {
+				if (!(getWorld()->isIce(getX() + 3, getY() - 1))) {
 
-		if (lifespan > 0) {
-			lifespan--;
-		}
+					if (lifespan > 0) {
+						lifespan--;
+					}
 
-		else {
-			getWorld()->playSound(SOUND_FALLING_ROCK);
-			moveTo(getX(), getY() - 1);
+					else {
+						getWorld()->playSound(SOUND_FALLING_ROCK);
+						moveTo(getX(), getY() - 1);
+					}
+				}
+			}
 		}
 	}
 
 }
 
-void Boulder::isWaiting(bool amIWaiting) {
+void Boulder::isWaiting() {
 
-	waiting = amIWaiting;
+	if (getWorld()->isIce(getX())) {
+
+	}
 }
 
 bool Boulder::isActive() {
