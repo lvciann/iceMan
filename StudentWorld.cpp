@@ -1,6 +1,7 @@
 #include "StudentWorld.h"
 #include <string>
 #include <algorithm>
+#include <cmath>
 using namespace std;
 
 
@@ -25,8 +26,6 @@ iceman(nullptr) {
 //allocate and insert a valid Iceman object at the proper location
 int StudentWorld::init()
 {
-//    int xAxis = 0;
-//    int yAxis = 0;
     this->iceman = new Iceman(this, 30, 60); //position of iceman
     std::vector<Actor *> actors; 
 
@@ -44,17 +43,20 @@ int StudentWorld::init()
         int y = boulderRandomY();
         
         actors.push_back(new Boulder(this, x, y));
-                   
     }
-
     for(int i = 0; i < goldNuggetAmnt(); i++){
-        actors.push_back(new GoldNugget(this, goldRandomX(), goldRandomY()));
-    
+        int x = goldRandomX();
+        int y = goldRandomY();
+        //put euclidian dist here
+        if(sqrt(pow((x-boulderRandomX()), 2) - pow(y-boulderRandomY(), 2))){
+            actors.push_back(new GoldNugget(this, x, y));
+        }
     }
     for(int i = 0; i < barrelAmnt(); i++){
-        if(i < (ICE_WIDTH - 30 ) || i > (ICE_WIDTH - 27) || (i >= (ICE_WIDTH - 30) && i <= (ICE_WIDTH - 26) && (ICE_HEIGHT < 4))){
-            actors.push_back(new OilBarrel(this, barrelRandomX(), barrelRandomY()));
-        }
+        //put euclidian dist here
+        
+        actors.push_back(new OilBarrel(this, barrelRandomX(), barrelRandomY()));
+
     }
     return GWSTATUS_CONTINUE_GAME;
 }
@@ -75,6 +77,12 @@ int StudentWorld::move()
             return GWSTATUS_FINISHED_LEVEL;
         }
         return GWSTATUS_CONTINUE_GAME;      // so that the game can continue
+    }
+    
+    for(Actor* i : actors){
+        if(i->isActive()){
+            i->doSomething();
+        }
     }
 
     ///////////////////////////////////////////next level////////////////////////////////////////////////////////
@@ -195,23 +203,9 @@ void StudentWorld::clearIce(int x, int y){
     //if iceman's location == the location of ice, delete ice
     //took the x(+- 1) and y(+- 3) position of iceman then made a for loop from the current position to calculated position to delete\\
     
-
-        delete ice[x][y];
+    delete ice[x][y];
+    ice[x][y] = nullptr;
 }
-//no dirt behind object
-//bool StudentWorld::noIceBehindObject(int x, int y) {
-//    bool status = false;
-//    for(int i = x; i < x + 4; i++){
-//        for (int j = y; j < y + 4; j++){
-//            if(isIce(x, y)){ //if there is ice, return status as true, delete ice
-//                status = true;
-//                Ice *tempIce = ice[i][j];
-//                delete tempIce;
-//            }
-//        }
-//    }
-//    return status;
-//}
 //checking if there is ice here
 bool StudentWorld::isIce(int x, int y){
     if(ice[x][y] != 0){
@@ -219,3 +213,4 @@ bool StudentWorld::isIce(int x, int y){
     }
     return false;
 }
+
