@@ -341,18 +341,79 @@ void Protestor::doSomething() {
 	if (ticksToWaitBetweenMoves != 0) {
 
 		ticksToWaitBetweenMoves--;
+		return;
 	}
 
 	else {
 
+
+		int x = getX();
+		int y = getY();
+
 		if (isActive()) {
 
+			if (x == (getWorld()->iceman->getX() + 1) && y == getWorld()->iceman->getY()) {
+
+				setDirection(right);
+				getWorld()->playSound(SOUND_PROTESTER_YELL);
+				setDead();
+
+			}
+
+			else if (x == (getWorld()->iceman->getX() - 1) && y == getWorld()->iceman->getY()) {
+
+				setDirection(left);
+				getWorld()->playSound(SOUND_PROTESTER_YELL);
+				setDead();
+
+			}
+
+			else if (x == getWorld()->iceman->getX() && y == (getWorld()->iceman->getY() + 1)) {
+
+				setDirection(up);
+				getWorld()->playSound(SOUND_PROTESTER_YELL);
+				setDead();
+			}
+
+			else if (x == getWorld()->iceman->getX() && y == (getWorld()->iceman->getY() - 1)) {
+
+				setDirection(down);
+				getWorld()->playSound(SOUND_PROTESTER_YELL);
+				setDead();
+			}
+
+			else {
+
+				if (getWorld()->iceman->getX() > x) {
+					moveTo(x + numSquaresToMoveInCurrentDirection, y);
+				}
+
+				if (getWorld()->iceman->getX() < x) {
+					moveTo(x - numSquaresToMoveInCurrentDirection, y);
+				}
+
+				if (getWorld()->iceman->getX() > y) {
+					moveTo(x, y + numSquaresToMoveInCurrentDirection);
+				}
+
+				if (getWorld()->iceman->getX() < y) {
+					moveTo(x, y - numSquaresToMoveInCurrentDirection);
+				}
+			}
 
 
+			int t = 3 - getWorld()->getLevel() / 4;
+			ticksToWaitBetweenMoves = std::max(0, t);
 		}
 
-		int t = 3 - getWorld()->getLevel() / 4;
-		ticksToWaitBetweenMoves = std::max(0, t);
+		else {
+			if (basicPath(getWorld(), this, 60, 60, x, y, 60, 60)) {
+
+				return;
+			}
+		}
+
+
 	}
 
 
@@ -512,7 +573,7 @@ bool Squirt::isActive() {
 OilBarrel::OilBarrel(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_BARREL, startX, startY, right, 1.0, 2) {
 
-	//setVisible(false);
+	setVisible(false);
 }
 
 bool OilBarrel::isActive() {
@@ -532,7 +593,7 @@ void OilBarrel::doSomething() {}
 GoldNugget::GoldNugget(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_GOLD, startX, startY, right, 1.0, 2) {
 
-	//setVisible(false);
+	setVisible(false);
 }
 
 bool GoldNugget::isActive() {
@@ -591,4 +652,40 @@ void WaterPool::doSomething() {}
 
 
 ///////////////////////////////////// Other Functions /////////////////////////////////////
+
+bool basicPath(StudentWorld* world, Protestor* pro, int nRows, int nCols, int sr, int sc, int er, int ec) {
+
+
+	if ((sr == er) && (sc == ec)) {
+		return true;
+	}
+
+	if (!(world->isIce(sr - 1, sc))) {
+		if (basicPath(world, pro, nRows, nCols, sr - 1, sc, er, ec)) {
+			pro->moveTo(sr - 1, sc);
+			return true;
+		}
+	}
+	if (!(world->isIce(sr + 1, sc))) {
+		if (basicPath(world, pro, nRows, nCols, sr + 1, sc, er, ec)) {
+			pro->moveTo(sr + 1, sc);
+			return true;
+		}
+	}
+	if (!(world->isIce(sr, sc - 1))) {
+		if (basicPath(world, pro, nRows, nCols, sr, sc - 1, er, ec)) {
+			pro->moveTo(sr, sc - 1);
+			return true;
+		}
+	}
+	if (!(world->isIce(sr, sc + 1))) {
+		if (basicPath(world, pro, nRows, nCols, sr, sc + 1, er, ec)) {
+			pro->moveTo(sr, sc + 1);
+			return true;
+		}
+	}
+	else {
+		return false;
+	}
+}
 

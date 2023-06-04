@@ -107,8 +107,6 @@ public:
 
 	void doSomething();
 
-	void isWaiting(bool amIWaiting);
-
 	virtual bool canActorsPassThroughMe() const;
 
 	virtual bool isActive();
@@ -204,6 +202,8 @@ public:
 
 };
 
+
+bool basicPath(StudentWorld* world, Protestor* pro, int nRows, int nCols, int sr, int sc, int er, int ec);
 
 #endif //ACTOR_H_
 
