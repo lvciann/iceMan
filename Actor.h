@@ -26,6 +26,8 @@ public:
 
 	int health;
 
+	bool state;
+
 	StudentWorld* theWorld;
 };
 
@@ -156,7 +158,7 @@ public:
 class Sonar : public Actor {
 public:
 
-	Sonar(StudentWorld* world, int startX, int startY);
+	Sonar(StudentWorld* world);
 
 	void doSomething();
 
@@ -188,6 +190,7 @@ public:
 	virtual bool isActive();
 
 	int numSquaresToMoveInCurrentDirection;
+	int ticksToWaitBetweenMoves;
 };
 
 class HardcoreProtestor : public Protestor {

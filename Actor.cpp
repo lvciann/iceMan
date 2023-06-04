@@ -240,7 +240,7 @@ void Iceman::doSomething() {
 
 				sq = new Squirt(getWorld(), x - 1, y, left);
 				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
-				sq->moveTo(x - 12, y);
+				sq->doSomething();
 
 			}
 
@@ -248,14 +248,14 @@ void Iceman::doSomething() {
 
 				sq = new Squirt(getWorld(), x + 1, y, right);
 				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
-				sq->moveTo(x + 12, y);
+				sq->doSomething();
 			}
 
 			else if (getDirection() == up) {
 
 				sq = new Squirt(getWorld(), x, y + 1, up);
 				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
-				sq->moveTo(x, y + 12);
+				sq->doSomething();
 
 			}
 
@@ -263,7 +263,7 @@ void Iceman::doSomething() {
 
 				sq = new Squirt(getWorld(), x, y - 1, down);
 				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
-				sq->moveTo(x, y - 12);
+				sq->doSomething();
 
 
 			}
@@ -321,6 +321,9 @@ Protestor::Protestor(StudentWorld* world, int startX, int startY, int imageID) :
 	health = 5;
 	numSquaresToMoveInCurrentDirection = (rand() % 56) + 4;
 
+	int t = 3 - getWorld()->getLevel() / 4;
+	ticksToWaitBetweenMoves = std::max(0, t);
+
 }
 
 bool Protestor::isActive() {
@@ -333,7 +336,28 @@ bool Protestor::isActive() {
 
 }
 
-void Protestor::doSomething() {}
+void Protestor::doSomething() {
+
+	if (ticksToWaitBetweenMoves != 0) {
+
+		ticksToWaitBetweenMoves--;
+	}
+
+	else {
+
+		if (isActive()) {
+
+
+
+		}
+
+		int t = 3 - getWorld()->getLevel() / 4;
+		ticksToWaitBetweenMoves = std::max(0, t);
+	}
+
+
+
+}
 
 ///////////////////////////////////// Hardcore Protestor Class /////////////////////////////////////
 
@@ -364,7 +388,11 @@ Ice::Ice(StudentWorld* world, int startX, int startY) :
 
 bool Ice::isActive() {
 
-	return true;
+	if (getWorld()->isIce(getX(), getY())) {
+		return true;
+	}
+
+	return false;
 }
 
 void Ice::doSomething() {}
@@ -374,7 +402,7 @@ void Ice::doSomething() {}
 Boulder::Boulder(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_BOULDER, startX, startY, down, 1.0, 1) {
 
-	lifespan = 30;
+	lifespan = 10;
 
 	if (getWorld()->isIce(startX, startY)) {
 
@@ -391,31 +419,32 @@ Boulder::Boulder(StudentWorld* world, int startX, int startY) :
 
 void Boulder::doSomething() {
 
-	if (!(getWorld()->isIce(getX(), getY() - 1))) {
-		if (!(getWorld()->isIce(getX() + 1, getY() - 1))) {
-			if (!(getWorld()->isIce(getX() + 2, getY() - 1))) {
-				if (!(getWorld()->isIce(getX() + 3, getY() - 1))) {
+	int x = getX();
+	int y = getY();
+
+	if (!(getWorld()->isIce(x, y - 1))) {
+		if (!(getWorld()->isIce(x + 1, y - 1))) {
+			if (!(getWorld()->isIce(x + 2, y - 1))) {
+				if (!(getWorld()->isIce(x + 3, y - 1))) {
 
 					if (lifespan > 0) {
 						lifespan--;
 					}
 
 					else {
+
+						//while (!(getWorld()->isIce(getX(), getY() - 1))) {
+
 						getWorld()->playSound(SOUND_FALLING_ROCK);
-						moveTo(getX(), getY() - 1);
+						moveTo(x, y - 8);
+						//}
+
 					}
 				}
 			}
 		}
 	}
 
-}
-
-void Boulder::isWaiting() {
-
-	if (getWorld()->isIce(getX())) {
-
-	}
 }
 
 bool Boulder::isActive() {
@@ -440,13 +469,41 @@ bool Boulder::canActorsPassThroughMe() const {
 Squirt::Squirt(StudentWorld* world, int startX, int startY, Direction dir) :
 	Actor(world, IID_WATER_SPURT, startX, startY, dir, 1.0, 1) {
 
+	state = true;
 }
 
-void Squirt::doSomething() {}
+void Squirt::doSomething() {
+
+	int x = getX();
+	int y = getY();
+
+	if (getDirection() == left && !(getWorld()->isIce(x - 12, y))) {
+		moveTo(x - 12, y);
+	}
+
+	if (getDirection() == right && !(getWorld()->isIce(x + 12, y))) {
+		moveTo(x + 12, y);
+	}
+
+	if (getDirection() == up && !(getWorld()->isIce(x, y + 12))) {
+		moveTo(x, y + 12);
+	}
+
+	if (getDirection() == down && !(getWorld()->isIce(x, y - 12))) {
+		moveTo(x, y - 12);
+	}
+
+	state = false;
+}
 
 bool Squirt::isActive() {
 
-	return true;
+	if (state) {
+
+		return true;
+	}
+
+	return false;
 
 }
 
@@ -459,7 +516,13 @@ OilBarrel::OilBarrel(StudentWorld* world, int startX, int startY) :
 }
 
 bool OilBarrel::isActive() {
-	return true;
+
+	if (state) {
+
+		return true;
+	}
+
+	return false;
 }
 
 void OilBarrel::doSomething() {}
@@ -469,25 +532,37 @@ void OilBarrel::doSomething() {}
 GoldNugget::GoldNugget(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_GOLD, startX, startY, right, 1.0, 2) {
 
+	//setVisible(false);
 }
 
 bool GoldNugget::isActive() {
 
-	return true;
+	if (state) {
+
+		return true;
+	}
+
+	return false;
 }
 
 void GoldNugget::doSomething() {}
 
 ///////////////////////////////////// Sonar Class /////////////////////////////////////
 
-Sonar::Sonar(StudentWorld* world, int startX, int startY) :
-	Actor(world, IID_SONAR, startX, startY, right, 1.0, 2) {
+Sonar::Sonar(StudentWorld* world) :
+	Actor(world, IID_SONAR, 0, 60, right, 1.0, 2) {
 
-
+	//setVisible(false);
 }
 
 bool Sonar::isActive() {
-	return true;
+
+	if (state) {
+
+		return true;
+	}
+
+	return false;
 
 }
 
@@ -498,11 +573,17 @@ void Sonar::doSomething() {}
 WaterPool::WaterPool(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_WATER_POOL, startX, startY, right, 1.0, 2) {
 
+	//setVisible(false);
 }
 
 bool WaterPool::isActive() {
 
-	return true;
+	if (state) {
+
+		return true;
+	}
+
+	return false;
 
 }
 
@@ -510,3 +591,4 @@ void WaterPool::doSomething() {}
 
 
 ///////////////////////////////////// Other Functions /////////////////////////////////////
+
