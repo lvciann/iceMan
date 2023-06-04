@@ -59,7 +59,8 @@ public:
     // Annoy the IceMan--if annoyed enough, will die
     //everytime it comes across a protestor, it will get "annoyed"/health will decrease. if health == 0, dies. sound will play
     void annoyIceMan();
-    bool isIce();
+    bool isIce(int x, int y);
+    bool noIceBehindObject(int x, int y);
     //for random positions
     int boulderRandomX();
     int boulderRandomY();
