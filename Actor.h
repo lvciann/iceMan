@@ -47,6 +47,8 @@ public:
 
 };
 
+class Squirt;
+
 class Iceman : public People {
 public:
 
@@ -61,6 +63,8 @@ public:
 	int getGold();
 
 	int getBarrel();
+
+	Squirt* getSquirt();
 
 	virtual void setDead();
 
@@ -79,6 +83,7 @@ private:
 	int barrels;
 	int ammo;
 	int charge;
+	Squirt* sq;
 
 };
 
@@ -177,7 +182,7 @@ public:
 
 	void doSomething();
 
-	
+
 	//both protestors can pick up gold nuggets
 
 	virtual bool isActive();
@@ -198,4 +203,5 @@ public:
 
 
 #endif //ACTOR_H_
+
 

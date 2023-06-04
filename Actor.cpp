@@ -1,11 +1,15 @@
 #include "Actor.h"
 #include <algorithm>
 
+///////////////////////////////////// Constants ////////////////////////////////////////////
+
+int ACTOR_HEIGHT = 4;
+
 ///////////////////////////////////// Actor Base Class /////////////////////////////////////
 
 Actor::Actor(StudentWorld* world, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
 	GraphObject(imageID, startX, startY, dir, size, depth) {
-	
+
 	health = 0;
 	theWorld = world;
 	setVisible(true);	//// change this for objects who start out invisible
@@ -41,10 +45,10 @@ void People::setGold(int i) {
 	gold = i;
 }
 
-void People::setDead(){}
+void People::setDead() {}
 
 bool People::isActive() {
-	
+
 	if (health > 0) {
 		return true;
 	}
@@ -62,6 +66,7 @@ Iceman::Iceman(StudentWorld* world, int startX, int startY) :
 	ammo = 5;
 	gold = 0;
 	charge = 1;
+	sq = nullptr;
 }
 
 bool Iceman::isActive() {
@@ -93,6 +98,11 @@ int Iceman::getBarrel() {
 	return barrels;
 }
 
+Squirt* Iceman::getSquirt() {
+
+	return sq;
+}
+
 void Iceman::setDead() {
 
 	health = 0;
@@ -120,12 +130,31 @@ void Iceman::doSomething() {
 	if (getWorld()->getKey(ch) == true)
 	{
 		// user hit a key this tick! 
+
+		int x = getX();
+		int y = getY();
+
 		switch (ch)
 		{
 		case KEY_PRESS_LEFT:
 
-			if (getDirection() == left && getX() > 0) {
-				moveTo(getX() - 1, getY());
+
+
+			if (getDirection() == left && x > 0) {
+
+				for (int i = 0; i < ACTOR_HEIGHT; i++) {
+
+					if (getWorld()->isIce(x - 1, y + i)) {
+						getWorld()->clearIce(x - 1, y + i);
+						getWorld()->playSound(SOUND_DIG);
+					}
+				}
+
+				moveTo(x - 1, y);
+			}
+
+			else {
+				moveTo(x, y);
 			}
 
 			setDirection(left);
@@ -133,8 +162,24 @@ void Iceman::doSomething() {
 			break;
 		case KEY_PRESS_RIGHT:
 
-			if (getDirection() == right && getX() < 56) {		//why 56?
-				moveTo(getX() + 1, getY());
+			if (getDirection() == right && x < 56) {
+
+				for (int i = 0; i < ACTOR_HEIGHT; i++) {
+
+					for (int j = 0; j < ACTOR_HEIGHT + 1; j++) {
+
+						if (getWorld()->isIce(x + j, y + i)) {
+							getWorld()->clearIce(x + j, y + i);
+							getWorld()->playSound(SOUND_DIG);
+						}
+					}
+				}
+
+				moveTo(x + 1, y);
+			}
+
+			else {
+				moveTo(x, y);
 			}
 
 			setDirection(right);
@@ -142,8 +187,24 @@ void Iceman::doSomething() {
 			break;
 		case KEY_PRESS_UP:
 
-			if (getDirection() == up && getY() < 60) {
-				moveTo(getX(), getY() + 1);
+			if (getDirection() == up && y < 56) {
+
+				for (int i = 0; i < ACTOR_HEIGHT; i++) {
+
+					for (int j = 0; j < ACTOR_HEIGHT + 1; j++) {
+
+						if (getWorld()->isIce(x + i, y + j)) {
+							getWorld()->clearIce(x + i, y + j);
+							getWorld()->playSound(SOUND_DIG);
+						}
+					}
+				}
+
+				moveTo(x, y + 1);
+			}
+
+			else {
+				moveTo(x, y);
 			}
 
 			setDirection(up);
@@ -151,50 +212,72 @@ void Iceman::doSomething() {
 			break;
 		case KEY_PRESS_DOWN:
 
-			if (getDirection() == down && getY() > 0) {
-				moveTo(getX(), getY() - 1);
+			if (getDirection() == down && y > 0) {
+
+				for (int i = 0; i < ACTOR_HEIGHT; i++) {
+
+					if (getWorld()->isIce(x + i, y - 1)) {
+						getWorld()->clearIce(x + i, y - 1);
+						getWorld()->playSound(SOUND_DIG);
+					}
+				}
+
+				moveTo(x, y - 1);
+			}
+
+			else {
+				moveTo(x, y);
 			}
 
 			setDirection(down);
 
+
 			break;
 
 		case KEY_PRESS_SPACE:
-			
+
 			if (getDirection() == left) {
 
-				Squirt* sq = new Squirt(getWorld(), getX() - 1, getY(), left);
+				sq = new Squirt(getWorld(), x - 1, y, left);
 				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
-				delete sq;
+				sq->moveTo(x - 12, y);
 
 			}
 
 			else if (getDirection() == right) {
 
-				Squirt* sq = new Squirt(getWorld(), getX() + 1, getY(), right);
+				sq = new Squirt(getWorld(), x + 1, y, right);
 				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
-				delete sq;
+				sq->moveTo(x + 12, y);
 			}
 
 			else if (getDirection() == up) {
 
-				Squirt* sq = new Squirt(getWorld(), getX(), getY() + 1, up);
+				sq = new Squirt(getWorld(), x, y + 1, up);
 				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
-				delete sq;
+				sq->moveTo(x, y + 12);
+
 			}
 
 			else if (getDirection() == down) {
 
-				Squirt* sq = new Squirt(getWorld(), getX(), getY() - 1, down);
+				sq = new Squirt(getWorld(), x, y - 1, down);
 				getWorld()->playSound(SOUND_PLAYER_SQUIRT);
-				delete sq;
+				sq->moveTo(x, y - 12);
+
+
 			}
+
 			break;
 
 		case KEY_PRESS_TAB:
 
-			gold--;
-			GoldNugget* nug = new GoldNugget(getWorld(), getX(), getY());
+			if (gold > 0) {
+				gold--;
+
+				GoldNugget* nug = new GoldNugget(getWorld(), getX(), getY());
+
+			}
 
 			break;
 
@@ -279,12 +362,12 @@ Ice::Ice(StudentWorld* world, int startX, int startY) :
 
 }
 
-bool Ice::isActive() { 
+bool Ice::isActive() {
 
 	return true;
 }
 
-void Ice::doSomething(){}
+void Ice::doSomething() {}
 
 ///////////////////////////////////// Boulder Class /////////////////////////////////////
 
@@ -292,6 +375,18 @@ Boulder::Boulder(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_BOULDER, startX, startY, down, 1.0, 1) {
 
 	lifespan = 30;
+
+	if (getWorld()->isIce(startX, startY)) {
+
+		for (int i = 0; i < ACTOR_HEIGHT; i++) {
+
+			for (int j = 0; j < ACTOR_HEIGHT; j++) {
+
+				getWorld()->clearIce(startX + i, startY + j);
+			}
+		}
+	}
+
 }
 
 void Boulder::doSomething() {
@@ -359,7 +454,7 @@ bool OilBarrel::isActive() {
 	return true;
 }
 
-void OilBarrel::doSomething(){}
+void OilBarrel::doSomething() {}
 
 ///////////////////////////////////// Gold Nugget Class /////////////////////////////////////
 
@@ -383,7 +478,7 @@ Sonar::Sonar(StudentWorld* world, int startX, int startY) :
 
 }
 
-bool Sonar::isActive(){
+bool Sonar::isActive() {
 	return true;
 
 }
