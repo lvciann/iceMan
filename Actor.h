@@ -94,7 +94,7 @@ public:
 
 	Ice(StudentWorld* world, int startX, int startY);
 
-	void doSomething();
+	virtual void doSomething();
 
 	virtual bool isActive();
 
@@ -105,7 +105,7 @@ public:
 
 	Boulder(StudentWorld* world, int startX, int startY);
 
-	void doSomething();
+	virtual void doSomething();
 
 	virtual bool canActorsPassThroughMe() const;
 
@@ -125,7 +125,7 @@ public:
 
 	Squirt(StudentWorld* world, int startX, int startY, Direction dir);
 
-	void doSomething();
+	virtual void doSomething();
 
 	virtual bool isActive();
 
@@ -136,7 +136,7 @@ public:
 
 	OilBarrel(StudentWorld* world, int startX, int startY);
 
-	void doSomething();
+	virtual void doSomething();
 
 	virtual bool isActive();
 
@@ -147,7 +147,7 @@ public:
 
 	GoldNugget(StudentWorld* world, int startX, int startY);
 
-	void doSomething();
+	virtual void doSomething();
 
 	virtual bool isActive();
 
@@ -158,7 +158,7 @@ public:
 
 	Sonar(StudentWorld* world);
 
-	void doSomething();
+	virtual void doSomething();
 
 	virtual bool isActive();
 
@@ -169,7 +169,7 @@ public:
 
 	WaterPool(StudentWorld* world, int startX, int startY);
 
-	void doSomething();
+	virtual void doSomething();
 
 	virtual bool isActive();
 
@@ -180,7 +180,7 @@ public:
 
 	Protestor(StudentWorld* world, int startX, int startY, int imageID);
 
-	void doSomething();
+	virtual void doSomething();
 
 
 	//both protestors can pick up gold nuggets
@@ -196,7 +196,7 @@ public:
 
 	HardcoreProtestor(StudentWorld* world, int startX, int startY);
 
-	void doSomething();
+	virtual void doSomething();
 
 	virtual bool isActive();
 

@@ -338,7 +338,7 @@ bool Protestor::isActive() {
 
 void Protestor::doSomething() {
 
-	if (ticksToWaitBetweenMoves != 0) {
+	if (ticksToWaitBetweenMoves > 0) {
 
 		ticksToWaitBetweenMoves--;
 		return;
@@ -357,6 +357,7 @@ void Protestor::doSomething() {
 				setDirection(right);
 				getWorld()->playSound(SOUND_PROTESTER_YELL);
 				setDead();
+				return;
 
 			}
 
@@ -365,6 +366,7 @@ void Protestor::doSomething() {
 				setDirection(left);
 				getWorld()->playSound(SOUND_PROTESTER_YELL);
 				setDead();
+				return;
 
 			}
 
@@ -373,6 +375,7 @@ void Protestor::doSomething() {
 				setDirection(up);
 				getWorld()->playSound(SOUND_PROTESTER_YELL);
 				setDead();
+				return;
 			}
 
 			else if (x == getWorld()->iceman->getX() && y == (getWorld()->iceman->getY() - 1)) {
@@ -380,24 +383,29 @@ void Protestor::doSomething() {
 				setDirection(down);
 				getWorld()->playSound(SOUND_PROTESTER_YELL);
 				setDead();
+				return;
 			}
 
 			else {
 
 				if (getWorld()->iceman->getX() > x) {
 					moveTo(x + numSquaresToMoveInCurrentDirection, y);
+					return;
 				}
 
 				if (getWorld()->iceman->getX() < x) {
 					moveTo(x - numSquaresToMoveInCurrentDirection, y);
+					return;
 				}
 
 				if (getWorld()->iceman->getX() > y) {
 					moveTo(x, y + numSquaresToMoveInCurrentDirection);
+					return;
 				}
 
 				if (getWorld()->iceman->getX() < y) {
 					moveTo(x, y - numSquaresToMoveInCurrentDirection);
+					return;
 				}
 			}
 
@@ -406,12 +414,12 @@ void Protestor::doSomething() {
 			ticksToWaitBetweenMoves = std::max(0, t);
 		}
 
-		else {
-			if (basicPath(getWorld(), this, 60, 60, x, y, 60, 60)) {
-
-				return;
-			}
-		}
+		//else {
+		//	if (basicPath(getWorld(), this, 60, 60, x, y, 60, 60)) {
+		//		getWorld()->playSound(SOUND_PROTESTER_GIVE_UP);
+		//		return;
+		//	}
+		//}
 
 
 	}
@@ -465,7 +473,7 @@ Boulder::Boulder(StudentWorld* world, int startX, int startY) :
 
 	lifespan = 10;
 
-	if (getWorld()->isIce(startX, startY)) {
+	if (getWorld()->isIce(startX, startY) && getWorld()->isIce(startX + 3, startY + 3)) {
 
 		for (int i = 0; i < ACTOR_HEIGHT; i++) {
 
@@ -483,6 +491,7 @@ void Boulder::doSomething() {
 	int x = getX();
 	int y = getY();
 
+
 	if (!(getWorld()->isIce(x, y - 1))) {
 		if (!(getWorld()->isIce(x + 1, y - 1))) {
 			if (!(getWorld()->isIce(x + 2, y - 1))) {
@@ -494,17 +503,16 @@ void Boulder::doSomething() {
 
 					else {
 
-						//while (!(getWorld()->isIce(getX(), getY() - 1))) {
-
 						getWorld()->playSound(SOUND_FALLING_ROCK);
 						moveTo(x, y - 8);
-						//}
-
+						setDead();
 					}
+
 				}
 			}
 		}
 	}
+
 
 }
 
@@ -661,31 +669,33 @@ bool basicPath(StudentWorld* world, Protestor* pro, int nRows, int nCols, int sr
 	}
 
 	if (!(world->isIce(sr - 1, sc))) {
-		if (basicPath(world, pro, nRows, nCols, sr - 1, sc, er, ec)) {
-			pro->moveTo(sr - 1, sc);
-			return true;
-		}
+		//if (basicPath(world, pro, nRows, nCols, sr - 1, sc, er, ec)) {
+		pro->moveTo(sr - 1, sc);
+		return true;
+		//}
 	}
 	if (!(world->isIce(sr + 1, sc))) {
-		if (basicPath(world, pro, nRows, nCols, sr + 1, sc, er, ec)) {
-			pro->moveTo(sr + 1, sc);
-			return true;
-		}
+		//if (basicPath(world, pro, nRows, nCols, sr + 1, sc, er, ec)) {
+		pro->moveTo(sr + 1, sc);
+		return true;
+		//}
 	}
 	if (!(world->isIce(sr, sc - 1))) {
-		if (basicPath(world, pro, nRows, nCols, sr, sc - 1, er, ec)) {
-			pro->moveTo(sr, sc - 1);
-			return true;
-		}
+		//if (basicPath(world, pro, nRows, nCols, sr, sc - 1, er, ec)) {
+		pro->moveTo(sr, sc - 1);
+		return true;
+		//}
 	}
 	if (!(world->isIce(sr, sc + 1))) {
-		if (basicPath(world, pro, nRows, nCols, sr, sc + 1, er, ec)) {
-			pro->moveTo(sr, sc + 1);
-			return true;
-		}
+		//if (basicPath(world, pro, nRows, nCols, sr, sc + 1, er, ec)) {
+		pro->moveTo(sr, sc + 1);
+		return true;
+		//}
 	}
 	else {
 		return false;
 	}
+	return false;
 }
+
 
