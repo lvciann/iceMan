@@ -27,7 +27,6 @@ iceman(nullptr) {
 int StudentWorld::init()
 {
     this->iceman = new Iceman(this, 30, 60); //position of iceman
-    std::vector<Actor *> actors; 
 
     for (int i = 0; i < ICE_WIDTH; ++i) { //for columns
         for (int j = 0; j < ICE_HEIGHT; ++j) { //for rows
@@ -72,14 +71,23 @@ int StudentWorld::move()
     stats();
     
     //sonar or water :P
-    //if rand % G, then spawn--THENNNNN,
-//    int G = getLevel()
-
-    for(int i = 0; i < sonarAndWaterProb(); i++){
+//    if rand % G, then spawn--THENNNNN,
+    int G = getLevel() * 25 + 300;
+    int num = rand() % G;
+    if(num == 1 || num == 2){
         actors.push_back(new Sonar(this));
+     //set visible
+        actors.back()->setVisible(true);
         
     }
-    
+//    else{
+//        int x = waterRandomX();
+//        int y = waterRandomY();
+//        if (!isIce(x, y)){
+//            actors.push_back(new WaterPool(this, x , y));
+//            actors.back()->setVisible(true);
+//        }
+//    }
     ///////////////////////////////////////////continue game////////////////////////////////////////////////////////
     //give each actor a chance to do something
     if(iceman->isActive() == true){ //if iceman is alive
@@ -146,7 +154,7 @@ void StudentWorld::stats(){
                           "WATER: " + to_string(iceman->getAmmo()) + "  "
                           + "GOLD: " + to_string(iceman->getGold()) + "  "
                         + "OIL LEFT: " + to_string(barrelAmnt()) + "  " + // = barrelAmnt - barrelsPickedUp
-                          "SONAR: " + to_string(sonarAmnt()) + "  "
+//                          "SONAR: " + to_string() + "  "
                           + "SCORE: " + to_string(getScore()) + "  ";
     
     setGameStatText(iceMan_stats);
@@ -198,6 +206,21 @@ int StudentWorld::barrelRandomY(){
     return rY;
 }
 
+int StudentWorld::waterRandomX(){
+    int rX;
+    if(ICE_WIDTH >= 0 || ICE_WIDTH <60){
+        rX = (rand() % 56) + 4;
+    }
+        return rX;
+}
+int StudentWorld::waterRandomY(){
+    int rY;
+    if(ICE_HEIGHT >= 0 || ICE_HEIGHT <= 56){
+        rY = rand() % 60;
+    }
+        return rY;
+}
+
 int StudentWorld::boulderAmnt(){
     int A = min(int (getLevel()/2) + 2, 9);
     return A;
@@ -210,15 +233,7 @@ int StudentWorld::barrelAmnt(){
     int L = min(2 + (int) (getLevel()), 21);
     return L;
 }
-int StudentWorld::sonarAndWaterProb(){
-    if(rand() % 10 + 1 == 1 || rand() % 10 + 1 == 2){ //for sonar-- if eq = 1 or 2, return sonar
-        int S = (getLevel() * 25) + 300;
-        
-    }
-}
-int StudentWorld::sonarAmnt(){
-    return iceman->getCharge();
-}
+
 
 //------------------------------------area for actors in oil field------------------------------------
 
