@@ -53,26 +53,40 @@ int StudentWorld::init()
         }
     }
     for(int i = 0; i < barrelAmnt(); i++){
+        int x = barrelRandomX();
+        int y = barrelRandomY();
         //put euclidian dist here
-        
-        actors.push_back(new OilBarrel(this, barrelRandomX(), barrelRandomY()));
-
+        if(sqrt(pow((x-goldRandomX()), 2) - pow(y-goldRandomY(), 2))){
+            actors.push_back(new OilBarrel(this, x, y));
+        }
     }
     return GWSTATUS_CONTINUE_GAME;
 }
 
-//
+
+
+//move function
 int StudentWorld::move()
 {
     //update game status line:
     stats();
+    
+    //sonar or water :P
+    //if rand % G, then spawn--THENNNNN,
+//    int G = getLevel()
+
+    for(int i = 0; i < sonarAndWaterProb(); i++){
+        actors.push_back(new Sonar(this));
+        
+    }
     
     ///////////////////////////////////////////continue game////////////////////////////////////////////////////////
     //give each actor a chance to do something
     if(iceman->isActive() == true){ //if iceman is alive
         //ask iceman to do something
         iceman->doSomething();
-        if(iceman->hasCompletedLevel(min((2 + (int) getLevel()), 21))){
+        
+        if(iceman->hasCompletedLevel(barrelAmnt())){        //if iceman has picked up the # of barrels in that level, finish level
             playSound(GWSTATUS_FINISHED_LEVEL);
             return GWSTATUS_FINISHED_LEVEL;
         }
@@ -87,12 +101,7 @@ int StudentWorld::move()
 
     ///////////////////////////////////////////next level////////////////////////////////////////////////////////
 
-    if(goldNuggetAmnt() == 0){
-        
-    }
     
-    // This code is here merely to allow the game to build, run, and terminate after you hit enter a few times.
-    // Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.
     ///////////////////////////////////////////player deaths////////////////////////////////////////////////////////
     if(iceman->getHealth() == 0){
         playSound(SOUND_PLAYER_GIVE_UP); //dont forget to play sound is void; this is int!!
@@ -101,8 +110,6 @@ int StudentWorld::move()
     decLives();
     return GWSTATUS_PLAYER_DIED;
     
-    //todo:
-    //if iceman has collected all of the barrels, next level
     
 }
 
@@ -120,6 +127,14 @@ void StudentWorld::cleanUp()
             }
         }
     }
+    
+    for(Actor *a : actors){
+        if(a->isActive() == false){
+            for(auto p : actors){
+                delete p;
+            }
+        }
+    }
 }
 
 
@@ -130,9 +145,8 @@ void StudentWorld::stats(){
                           "HEALTH: " + to_string(iceman->getHealth() * 10) + "%" + "  " +
                           "WATER: " + to_string(iceman->getAmmo()) + "  "
                           + "GOLD: " + to_string(iceman->getGold()) + "  "
-//                        + "OIL LEFT: " + to_string() + "
-                            //   " barrel dist - amount collected
-//                          "SONAR: " + to_string() + "  "
+                        + "OIL LEFT: " + to_string(barrelAmnt()) + "  " + // = barrelAmnt - barrelsPickedUp
+                          "SONAR: " + to_string(sonarAmnt()) + "  "
                           + "SCORE: " + to_string(getScore()) + "  ";
     
     setGameStatText(iceMan_stats);
@@ -195,6 +209,15 @@ int StudentWorld::goldNuggetAmnt(){
 int StudentWorld::barrelAmnt(){
     int L = min(2 + (int) (getLevel()), 21);
     return L;
+}
+int StudentWorld::sonarAndWaterProb(){
+    if(rand() % 10 + 1 == 1 || rand() % 10 + 1 == 2){ //for sonar-- if eq = 1 or 2, return sonar
+        int S = (getLevel() * 25) + 300;
+        
+    }
+}
+int StudentWorld::sonarAmnt(){
+    return ;
 }
 
 //------------------------------------area for actors in oil field------------------------------------
