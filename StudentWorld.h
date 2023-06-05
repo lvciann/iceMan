@@ -58,7 +58,6 @@ public:
     //barrel amount--returns # of barrels
     int barrelAmnt();
     //sonar
-    int sonarAndWaterProb();
     int sonarAmnt(); //# of sonar
     int incSonar(); //if sonar gets picked up, ++
     int decSonar(); //if sonar gets used, --
@@ -74,7 +73,8 @@ public:
     int goldRandomY();
     int barrelRandomX();
     int barrelRandomY();
-
+    int waterRandomX();
+    int waterRandomY();
 };
 
 
