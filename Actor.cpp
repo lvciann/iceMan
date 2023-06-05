@@ -586,7 +586,7 @@ bool Squirt::isActive() {
 OilBarrel::OilBarrel(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_BARREL, startX, startY, right, 1.0, 2) {
 
-	setVisible(false);
+	//setVisible(false);
 }
 
 bool OilBarrel::isActive() {
@@ -606,7 +606,7 @@ void OilBarrel::doSomething() {}
 GoldNugget::GoldNugget(StudentWorld* world, int startX, int startY) :
 	Actor(world, IID_GOLD, startX, startY, right, 1.0, 2) {
 
-	setVisible(false);
+	//setVisible(false);
 }
 
 bool GoldNugget::isActive() {

@@ -36,6 +36,10 @@ int StudentWorld::init()
 
         }
     }
+
+    //new protestor
+    actors.push_back(new Protestor(this, 45, 60, IID_PROTESTER));
+
     //distributing game objects randomly
     for(int i = 0; i < boulderAmnt(); i++){
         int x = boulderRandomX();
@@ -93,6 +97,12 @@ int StudentWorld::move()
     if(iceman->isActive() == true){ //if iceman is alive
         //ask iceman to do something
         iceman->doSomething();
+
+        for (Actor* i : actors) {
+            if (i->isActive()) {
+                i->doSomething();
+            }
+        }
         
         if(iceman->hasCompletedLevel(barrelAmnt())){        //if iceman has picked up the # of barrels in that level, finish level
             playSound(GWSTATUS_FINISHED_LEVEL);
@@ -101,11 +111,6 @@ int StudentWorld::move()
         return GWSTATUS_CONTINUE_GAME;      // so that the game can continue
     }
     
-    for(Actor* i : actors){
-        if(i->isActive()){
-            i->doSomething();
-        }
-    }
 
     ///////////////////////////////////////////next level////////////////////////////////////////////////////////
 
