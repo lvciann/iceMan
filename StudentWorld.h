@@ -21,10 +21,12 @@ class Ice;
 
 class StudentWorld : public GameWorld { //since it's keeping track of
 private:
-    Ice* ice[ICE_HEIGHT][ICE_WIDTH]; // 2d-array of Ice pointers
-    Iceman* iceman;
+//    Ice* ice[ICE_HEIGHT][ICE_WIDTH]; // 2d-array of Ice pointers
+//    Iceman* iceman;
     std::vector<Actor *> actors; //empty vector of pointers to objects (reg  protestors, gold, barrels, sonar)
 public:
+    Ice* ice[ICE_HEIGHT][ICE_WIDTH]; // 2d-array of Ice pointers
+    Iceman* iceman;
     StudentWorld(std::string assetDir);
 //    virtual ~StudentWorld(); --use cleanup() instead
     //initialize the data structures used to keep track of game's virtual world
@@ -55,12 +57,16 @@ public:
     int goldNuggetAmnt();
     //barrel amount--returns # of barrels
     int barrelAmnt();
-    //protestor amount--
+    //sonar
+    int sonarAndWaterProb();
+    int sonarAmnt(); //# of sonar
+    int incSonar(); //if sonar gets picked up, ++
+    int decSonar(); //if sonar gets used, --
     // Annoy the IceMan--if annoyed enough, will die
     //everytime it comes across a protestor, it will get "annoyed"/health will decrease. if health == 0, dies. sound will play
     void annoyIceMan();
     bool isIce(int x, int y);
-    bool noIceBehindObject(int x, int y);
+    bool sixSquaresAwayLol(int x, int y);
     //for random positions
     int boulderRandomX();
     int boulderRandomY();
