@@ -88,6 +88,11 @@ int Iceman::getAmmo() {
 	return ammo;
 }
 
+int Iceman::getCharge() {
+	
+	return charge;
+}
+
 int Iceman::getGold() {
 
 	return gold;

@@ -62,6 +62,8 @@ public:
 
 	int getAmmo();
 
+	int getCharge();
+
 	int getGold();
 
 	int getBarrel();

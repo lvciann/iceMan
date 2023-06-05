@@ -217,7 +217,7 @@ int StudentWorld::sonarAndWaterProb(){
     }
 }
 int StudentWorld::sonarAmnt(){
-    return ;
+    return iceman->getCharge();
 }
 
 //------------------------------------area for actors in oil field------------------------------------
